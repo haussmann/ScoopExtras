@@ -16,6 +16,13 @@
             "hash": "6c2f9357c9f835449ba07c88ea9d77bf69e1d2593b09c329fde0dbd1bce7b065"
         }
     },
+    "persist": "AppData",
+    "post_install": [
+        "if (!(Test-Path \"$dir\\AppData\\*\") -and (Test-Path \"$env:APPDATA\\imdone\")) {",
+        "    info '[Portable Mode]: Copying user data...'",
+        "    Copy-Item \"$env:APPDATA\\imdone\\*\" \"$dir\\AppData\" -Recurse",
+        "}"
+    ],
     "installer": {
         "script": [
             "Get-Item \"$dir\\`$PLUGINSDIR\\app*.7z\" | Expand-7zipArchive -DestinationPath \"$dir\"",
@@ -25,7 +32,8 @@
     "shortcuts": [
         [
             "imdone.exe",
-            "imdone"
+            "imdone",
+            "--user-data-dir=\"$dir\\AppData\""
         ]
     ],
     "checkver": {
